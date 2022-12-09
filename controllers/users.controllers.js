@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
-const { ObjectId } = require('mongodb');
 
-const usersServices = require('../services/users.services')
+const usersModel = require('../models/users.models')
 
 module.exports = {
   add: async (params) => {
@@ -9,7 +8,7 @@ module.exports = {
 
     const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT))
 
-    const result = await usersServices.insert({
+    const result = await usersModel.create({
       firstName,
       lastName,
       password: hashedPassword,
@@ -17,29 +16,11 @@ module.exports = {
       email,
     })
 
-    return {
-      result
-    }
+    return result
   },
-  changePassword: async (password, id) => {
-    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT))
-    const result = await usersServices.updatePassword(id, hashedPassword)
-    return result._id
-  },
-  updateUser: async (params, id) => {
-    const { firstName, lastName, email, age, password } = params
 
-    const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT))
-
-    const updatedUser = {
-      firstName,
-      lastName,
-      email,
-      age,
-      password: hashedPassword
-    }
-
-    const result = await usersServices.editById(id, updatedUser)
-    return result._id
+  getUsers: async () => {
+    const result = await usersModel.findAll()
+    return result
   }
 }

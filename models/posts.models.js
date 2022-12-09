@@ -1,11 +1,17 @@
-const mongoose = require('mongoose');
+const Sequelize = require('sequelize')
+const sequelize = require('../lib/dbConfig')
 
-const postsSchema = new mongoose.Schema({
-  title: { type: String, required: true},
-  body: { type: String, required: true}
+const Post = sequelize.define("post", {
+  title: {
+    type: Sequelize.STRING(100),
+    allowNull: false
+  },
+  body: {
+    type: Sequelize.TEXT(),
+    allowNull: false
+  }
 }, {
-  timestamps: true
-})
+  timestamps: false
+});
 
-const postsModel = mongoose.model('Posts', postsSchema)
-module.exports = postsModel
+module.exports = Post

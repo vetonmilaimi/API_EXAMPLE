@@ -5,7 +5,17 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index.routes');
 const postsRouter = require('./routes/posts.routes');
-const usersRouter = require('./routes/users.routes')
+const usersRouter = require('./routes/users.routes');
+const sequelize = require('./lib/dbConfig');
+
+sequelize.authenticate()
+  .then(() => {
+    console.log("Connected");
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+
 
 const app = express();
 
@@ -19,4 +29,6 @@ app.use('/', indexRouter);
 app.use('/posts', postsRouter);
 app.use('/user', usersRouter);
 
+
+sequelize.sync()
 module.exports = app;

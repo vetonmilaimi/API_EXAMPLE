@@ -1,25 +1,21 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const usersServices = require('../services/users.services')
+const usersModel = require("../models/users.models")
 
 module.exports = {
   login: async (params) => {
-    const {email, password} = params
+    const { email, password } = params
 
-    const user = await usersServices.findByEmail(email)
-    if(!user) {
-      throw Error("User not exists")
-    }
 
-    if(!(await bcrypt.compare(password, user.password))) {
-      throw Error("Invalid password")
-    }
 
-    const token = await jwt.sign({_id: user._id}, process.env.JWT_SECRET)
+    const user = await usersModel.findOne({ email })
+    if (!user) throw new Error("User not exists")
+
+    if (!bcrypt.compare(password, user.password)) throw new Error("Password is incorrect")
     
-    return {
-      token
-    }
+    return token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET)
+
+
   }
 }

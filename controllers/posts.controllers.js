@@ -1,16 +1,17 @@
-const postsServices = require('../services/posts.services')
+const postsModel = require('../models/posts.models')
 
 module.exports = {
   add: async (params) => {
     const { title, body } = params
-    const result = await postsServices.insert({
+    const result = await postsModel.create({
       title, 
       body
     })
     return result
   },
+  
   getAll: async () => {
-    const result = await postsServices.get()
+    const result = await postsModel.findAll()
     return result
   }
 }

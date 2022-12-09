@@ -1,36 +1,27 @@
-const mongoose = require('mongoose');
+const Sequelize = require("sequelize")
+const sequelize = require('../lib/dbConfig')
 
-const usersSchema = new mongoose.Schema(
-  {
-    firstName: {
-      type: String,
-      required: true
-    },
-    lastName: {
-      type: String,
-      required: true
-    },
-    email: {
-      type: String,
-      required: true,
-      lowercase: true,
-      unique: true,
-      trim: true,
-      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
-    },
-    age: {
-      type: Number,
-      min: 1
-    },
-    password: {
-      type: String,
-      required: true
-    },
+const User = sequelize.define("user", {
+  firstName: {
+    type: Sequelize.STRING(32),
+    allowNull: false
   },
-  {
-    timestamps: true,
-  }
-);
+  lastName: {
+    type: Sequelize.STRING(32),
+    allowNull: false
+  },
+  email: {
+    type: Sequelize.STRING(32),
+    allowNull: false
+  },
+  password: {
+    type: Sequelize.STRING(32),
+    allowNull: false
+  },
+  age: {
+    type: Sequelize.INTEGER(),
+    allowNull: false
+  },
+});
 
-const usersModel = mongoose.model('users', usersSchema)
-module.exports = usersModel
+module.exports = User
