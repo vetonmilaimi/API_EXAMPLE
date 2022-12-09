@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const controller = require("./controllers/auth.controllers")
+
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
