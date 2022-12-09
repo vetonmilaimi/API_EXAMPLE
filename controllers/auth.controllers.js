@@ -9,13 +9,16 @@ module.exports = {
 
 
 
-    const user = await usersModel.findOne({ email })
-    if (!user) throw new Error("User not exists")
-
-    if (!bcrypt.compare(password, user.password)) throw new Error("Password is incorrect")
-    
-    return token = await jwt.sign({ _id: user._id }, process.env.JWT_SECRET)
+    const user = await usersModel.findOne({ where: { email } })
+    if (!user) {
+      throw new Error("User not exists")
+    }
 
 
+    if (await !bcrypt.compare(password, user.password)) {
+      throw new Error("Password is incorrect")
+    }
+
+    return token = await jwt.sign({ id: user.id }, process.env.JWT_SECRET)
   }
 }
