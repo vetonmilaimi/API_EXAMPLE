@@ -7,8 +7,6 @@ module.exports = {
   login: async (params) => {
     const { email, password } = params
 
-
-
     const user = await usersModel.findOne({ where: { email } })
     if (!user) {
       throw new Error("User not exists")
